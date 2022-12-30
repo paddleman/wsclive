@@ -1,0 +1,37 @@
+<.header>
+  Instant peak <%= @instant_peak.id %>
+  <:subtitle>This is a instant_peak record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/instant_peaks/#{@instant_peak}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit instant_peak</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Station number"><%= @instant_peak.station_number %></:item>
+  <:item title="Data type"><%= @instant_peak.data_type %></:item>
+  <:item title="Year"><%= @instant_peak.year %></:item>
+  <:item title="Peak code"><%= @instant_peak.peak_code %></:item>
+  <:item title="Precision code"><%= @instant_peak.precision_code %></:item>
+  <:item title="Month"><%= @instant_peak.month %></:item>
+  <:item title="Day"><%= @instant_peak.day %></:item>
+  <:item title="Hour"><%= @instant_peak.hour %></:item>
+  <:item title="Minute"><%= @instant_peak.minute %></:item>
+  <:item title="Time zone"><%= @instant_peak.time_zone %></:item>
+  <:item title="Peak"><%= @instant_peak.peak %></:item>
+  <:item title="Symbol"><%= @instant_peak.symbol %></:item>
+</.list>
+
+<.back navigate={~p"/instant_peaks"}>Back to instant_peaks</.back>
+
+<.modal :if={@live_action == :edit} id="instant_peak-modal" show on_cancel={JS.patch(~p"/instant_peaks/#{@instant_peak}")}>
+  <.live_component
+    module={WscliveWeb.InstantPeakLive.FormComponent}
+    id={@instant_peak.id}
+    title={@page_title}
+    action={@live_action}
+    instant_peak={@instant_peak}
+    navigate={~p"/instant_peaks/#{@instant_peak}"}
+  />
+</.modal>

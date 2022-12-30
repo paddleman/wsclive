@@ -1,0 +1,56 @@
+
+station_number:string station_name:string prov:string hyd_status:string sed_status latitude:float longitude:float drainage_area_gross:float drainage_area_effect:float
+
+station_number:string data_type:string year:integer peak_code:string precision_code:string month:integer day:integer hour:integer minute:integer time_zone:string peak:float symbol:stirng station_id:integer
+
+
+stations/index.html.heex
+<.header>
+  Listing Stations
+  <:actions>
+    <.link patch={~p"/stations/new"}>
+      <.button>New Station</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="stations" rows={@stations} row_click={&JS.navigate(~p"/stations/#{&1}")}>
+  <:col :let={station} label="Station number"><%= station.station_number %></:col>
+  <:col :let={station} label="Station name"><%= station.station_name %></:col>
+  <%!-- <:col :let={station} label="Prov"><%= station.prov %></:col> --%>
+  <:col :let={station} label="Hyd status"><%= station.hyd_status %></:col>
+  <:col :let={station} label="Drainage area gross"><%= station.drainage_area_gross %></:col>
+  <:col :let={station} label="Drainage area effect"><%= station.drainage_area_effect %></:col>
+  <:col :let={station} label="Record Length"><%= station.record_length %></:col>
+  <:col :let={station} label="from Year"><%= station.from_year %></:col>
+  <:col :let={station} label="to Year"><%= station.to_year %></:col>
+  <:col :let={station} label="Regulated?"><%= station.regulated %></:col>
+
+  <:action :let={station}>
+    <div class="sr-only">
+      <.link navigate={~p"/stations/#{station}"}>Show</.link>
+    </div>
+    <.link patch={~p"/stations/#{station}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={station}>
+    <.link phx-click={JS.push("delete", value: %{id: station.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="station-modal"
+  show
+  on_cancel={JS.navigate(~p"/stations")}
+>
+  <.live_component
+    module={WscliveWeb.StationLive.FormComponent}
+    id={@station.id || :new}
+    title={@page_title}
+    action={@live_action}
+    station={@station}
+    navigate={~p"/stations"}
+  />
+</.modal>

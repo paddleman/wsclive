@@ -1,0 +1,38 @@
+<.header>
+  Station <%= @station.id %>
+  <:subtitle>This is a station record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/stations/#{@station}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit station</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Station number"><%= @station.station_number %></:item>
+  <:item title="Station name"><%= @station.station_name %></:item>
+  <%!-- <:item title="Prov"><%= @station.prov %></:item> --%>
+  <:item title="Hyd status"><%= @station.hyd_status %></:item>
+  <%!-- <:item title="Latitude"><%= @station.latitude %></:item>
+  <:item title="Longitude"><%= @station.longitude %></:item> --%>
+  <:item title="Drainage area gross"><%= @station.drainage_area_gross %></:item>
+  <:item title="Drainage area effect"><%= @station.drainage_area_effect %></:item>
+</.list>
+
+<.back navigate={~p"/stations"}>Back to stations</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="station-modal"
+  show
+  on_cancel={JS.patch(~p"/stations/#{@station}")}
+>
+  <.live_component
+    module={WscliveWeb.StationLive.FormComponent}
+    id={@station.id}
+    title={@page_title}
+    action={@live_action}
+    station={@station}
+    navigate={~p"/stations/#{@station}"}
+  />
+</.modal>

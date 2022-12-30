@@ -1,0 +1,19 @@
+<div class="second-grid px-2">
+  <div class="map-box min-w-full min-h-full" id="some-id" phx-update="ignore">
+    <div class="border-black border-2" id="map" phx-hook="StationMap"></div>
+  </div>
+
+  <div class="info-box bg-zinc-100 bg-opacity-10 min-w-full min-h-full">
+    <div class="info-area min-h-full border-2">
+      <%= if  @selected_station !== nil  do %>
+        <div class="text-2xl text-center">
+          <%= @selected_station.station_number %> - <%= @selected_station.station_name %>
+        </div>
+      <% else %>
+        <div class="text-2xl text-center">
+          Please select station on map!
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

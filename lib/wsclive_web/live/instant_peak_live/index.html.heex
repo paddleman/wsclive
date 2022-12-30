@@ -1,0 +1,50 @@
+<.header>
+  Listing Instant peaks
+  <:actions>
+    <.link patch={~p"/instant_peaks/new"}>
+      <.button>New Instant peak</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="instant_peaks" rows={@instant_peaks} row_click={&JS.navigate(~p"/instant_peaks/#{&1}")}>
+  <:col :let={instant_peak} label="Station number"><%= instant_peak.station_number %></:col>
+  <:col :let={instant_peak} label="Data type"><%= instant_peak.data_type %></:col>
+  <:col :let={instant_peak} label="Year"><%= instant_peak.year %></:col>
+  <:col :let={instant_peak} label="Peak code"><%= instant_peak.peak_code %></:col>
+  <:col :let={instant_peak} label="Precision code"><%= instant_peak.precision_code %></:col>
+  <:col :let={instant_peak} label="Month"><%= instant_peak.month %></:col>
+  <:col :let={instant_peak} label="Day"><%= instant_peak.day %></:col>
+  <:col :let={instant_peak} label="Hour"><%= instant_peak.hour %></:col>
+  <:col :let={instant_peak} label="Minute"><%= instant_peak.minute %></:col>
+  <:col :let={instant_peak} label="Time zone"><%= instant_peak.time_zone %></:col>
+  <:col :let={instant_peak} label="Peak"><%= instant_peak.peak %></:col>
+  <:col :let={instant_peak} label="Symbol"><%= instant_peak.symbol %></:col>
+  <:action :let={instant_peak}>
+    <div class="sr-only">
+      <.link navigate={~p"/instant_peaks/#{instant_peak}"}>Show</.link>
+    </div>
+    <.link patch={~p"/instant_peaks/#{instant_peak}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={instant_peak}>
+    <.link phx-click={JS.push("delete", value: %{id: instant_peak.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="instant_peak-modal"
+  show
+  on_cancel={JS.navigate(~p"/instant_peaks")}
+>
+  <.live_component
+    module={WscliveWeb.InstantPeakLive.FormComponent}
+    id={@instant_peak.id || :new}
+    title={@page_title}
+    action={@live_action}
+    instant_peak={@instant_peak}
+    navigate={~p"/instant_peaks"}
+  />
+</.modal>
