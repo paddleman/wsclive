@@ -15,24 +15,24 @@ defmodule WscliveWeb.CoreComponents do
   import WscliveWeb.Gettext
 
   @doc """
-  Renders a modal.
+  Renders a phx_modal.
 
   ## Examples
 
-      <.modal id="confirm-modal">
+      <.phx_modal id="confirm-phx_modal">
         Are you sure?
         <:confirm>OK</:confirm>
         <:cancel>Cancel</:cancel>
-      </.modal>
+      </.phx_modal>
 
   JS commands may be passed to the `:on_cancel` and `on_confirm` attributes
   for the caller to react to each button press, for example:
 
-      <.modal id="confirm" on_confirm={JS.push("delete")} on_cancel={JS.navigate(~p"/posts")}>
+      <.phx_modal id="confirm" on_confirm={JS.push("delete")} on_cancel={JS.navigate(~p"/posts")}>
         Are you sure you?
         <:confirm>OK</:confirm>
         <:cancel>Cancel</:cancel>
-      </.modal>
+      </.phx_modal>
   """
   attr :id, :string, required: true
   attr :show, :boolean, default: false
@@ -45,31 +45,31 @@ defmodule WscliveWeb.CoreComponents do
   slot :confirm
   slot :cancel
 
-  def modal(assigns) do
+  def phx_modal(assigns) do
     ~H"""
-    <div id={@id} phx-mounted={@show && show_modal(@id)} class="relative z-50 hidden">
+    <div id={@id} phx-mounted={@show && show_phx_modal(@id)} class="relative z-50 hidden">
       <div id={"#{@id}-bg"} class="fixed inset-0 bg-zinc-50/90 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
         aria-describedby={"#{@id}-description"}
         role="dialog"
-        aria-modal="true"
+        aria-phx_modal="true"
         tabindex="0"
       >
         <div class="flex min-h-full items-center justify-center">
           <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
             <.focus_wrap
               id={"#{@id}-container"}
-              phx-mounted={@show && show_modal(@id)}
-              phx-window-keydown={hide_modal(@on_cancel, @id)}
+              phx-mounted={@show && show_phx_modal(@id)}
+              phx-window-keydown={hide_phx_modal(@on_cancel, @id)}
               phx-key="escape"
-              phx-click-away={hide_modal(@on_cancel, @id)}
+              phx-click-away={hide_phx_modal(@on_cancel, @id)}
               class="hidden relative rounded-2xl bg-white p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
-                  phx-click={hide_modal(@on_cancel, @id)}
+                  phx-click={hide_phx_modal(@on_cancel, @id)}
                   type="button"
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
                   aria-label={gettext("close")}
@@ -88,7 +88,7 @@ defmodule WscliveWeb.CoreComponents do
                 </header>
                 <%= render_slot(@inner_block) %>
                 <div :if={@confirm != [] or @cancel != []} class="ml-6 mb-4 flex items-center gap-5">
-                  <.button
+                  <.phx_button
                     :for={confirm <- @confirm}
                     id={"#{@id}-confirm"}
                     phx-click={@on_confirm}
@@ -96,10 +96,10 @@ defmodule WscliveWeb.CoreComponents do
                     class="py-2 px-3"
                   >
                     <%= render_slot(confirm) %>
-                  </.button>
+                  </.phx_button>
                   <.link
                     :for={cancel <- @cancel}
-                    phx-click={hide_modal(@on_cancel, @id)}
+                    phx-click={hide_phx_modal(@on_cancel, @id)}
                     class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
                   >
                     <%= render_slot(cancel) %>
@@ -174,7 +174,7 @@ defmodule WscliveWeb.CoreComponents do
         <.input field={{f, :email}} label="Email"/>
         <.input field={{f, :username}} label="Username" />
         <:actions>
-          <.button>Save</.button>
+          <.phx_button>Save</.phx_button>
         </:actions>
       </.simple_form>
   """
@@ -206,8 +206,8 @@ defmodule WscliveWeb.CoreComponents do
 
   ## Examples
 
-      <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
+      <.phx_button>Send!</.phx_button>
+      <.phx_button phx-click="go" class="ml-2">Send!</.phx_button>
   """
   attr :type, :string, default: nil
   attr :class, :string, default: nil
@@ -215,7 +215,7 @@ defmodule WscliveWeb.CoreComponents do
 
   slot :inner_block, required: true
 
-  def button(assigns) do
+  def phx_button(assigns) do
     ~H"""
     <button
       type={@type}
@@ -438,7 +438,7 @@ defmodule WscliveWeb.CoreComponents do
 
   slot :action, doc: "the slot for showing user actions in the last table column"
 
-  def table(assigns) do
+  def phx_table(assigns) do
     ~H"""
     <div id={@id} class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
       <table class="mt-11 w-[40rem] sm:w-full">
@@ -560,7 +560,7 @@ defmodule WscliveWeb.CoreComponents do
     )
   end
 
-  def show_modal(js \\ %JS{}, id) when is_binary(id) do
+  def show_phx_modal(js \\ %JS{}, id) when is_binary(id) do
     js
     |> JS.show(to: "##{id}")
     |> JS.show(
@@ -571,7 +571,7 @@ defmodule WscliveWeb.CoreComponents do
     |> JS.focus_first(to: "##{id}-content")
   end
 
-  def hide_modal(js \\ %JS{}, id) do
+  def hide_phx_modal(js \\ %JS{}, id) do
     js
     |> JS.hide(
       to: "##{id}-bg",

@@ -52,8 +52,7 @@ defmodule Wsclive.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:geo_postgis, "~> 3.4"},
-      {:vega_lite, "~> 0.1.6"},
-      {:petal_components, "~> 0.19"}
+      {:vega_lite, "~> 0.1.6"}
     ]
   end
 

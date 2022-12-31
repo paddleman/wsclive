@@ -2,7 +2,6 @@ defmodule Wsclive.Stations.Station do
   use Ecto.Schema
   import Ecto.Changeset
   alias Geo.PostGIS
-  alias Wsclive.Stations
   alias Wsclive.Stations.Station
 
   @derive {Jason.Encoder, only: [:id, :lat, :lng, :station_number]}

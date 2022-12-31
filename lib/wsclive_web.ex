@@ -76,6 +76,7 @@ defmodule WscliveWeb do
         only: [get_csrf_token: 0, view_module: 1, view_template: 1]
 
       # Include general helpers for rendering HTML
+
       unquote(html_helpers())
     end
   end
@@ -87,6 +88,8 @@ defmodule WscliveWeb do
       # Core UI components and translation
       import WscliveWeb.CoreComponents
       import WscliveWeb.Gettext
+
+      use PetalComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
